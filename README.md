@@ -83,6 +83,11 @@ npm run dev
 
 Contributions are welcome! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
 
+## 👥 Our Team
+
+*   **Simar Kaur** - Team Leader
+*   **Muzamil Mir** - Tech Lead & Project Architect
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
