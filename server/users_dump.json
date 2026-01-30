@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "System Administrator",
+    "username": "admin",
+    "password_hash": "$2b$10$fzRUvYek0ONdwpOwqgpLiODSVDGPqWc0ADtAqUasutRL8SsqTOhbe",
+    "role": "ADMIN",
+    "active": true,
+    "createdAt": "2026-01-25T19:31:05.378Z"
+  },
+  {
+    "id": 2,
+    "name": "Front Desk",
+    "username": "reception",
+    "password_hash": "$2b$10$fzRUvYek0ONdwpOwqgpLiODSVDGPqWc0ADtAqUasutRL8SsqTOhbe",
+    "role": "RECEPTIONIST",
+    "active": true,
+    "createdAt": "2026-01-25T19:31:05.394Z"
+  },
+  {
+    "id": 3,
+    "name": "Dr. Sharma",
+    "username": "doc_sharma",
+    "password_hash": "$2b$10$fzRUvYek0ONdwpOwqgpLiODSVDGPqWc0ADtAqUasutRL8SsqTOhbe",
+    "role": "DOCTOR",
+    "active": true,
+    "createdAt": "2026-01-25T19:31:05.401Z"
+  },
+  {
+    "id": 4,
+    "name": "Dr. Verma",
+    "username": "doc_verma",
+    "password_hash": "$2b$10$fzRUvYek0ONdwpOwqgpLiODSVDGPqWc0ADtAqUasutRL8SsqTOhbe",
+    "role": "DOCTOR",
+    "active": true,
+    "createdAt": "2026-01-25T19:31:05.414Z"
+  },
+  {
+    "id": 5,
+    "name": "Lab Technician",
+    "username": "lab_tech",
+    "password_hash": "$2b$10$fzRUvYek0ONdwpOwqgpLiODSVDGPqWc0ADtAqUasutRL8SsqTOhbe",
+    "role": "LAB_TECH",
+    "active": true,
+    "createdAt": "2026-01-25T19:31:05.430Z"
+  }
+]

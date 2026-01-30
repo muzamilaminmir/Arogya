@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  name          String
+  username      String   @unique
+  password_hash String
+  role          String // ADMIN, DOCTOR, RECEPTIONIST, LAB_TECH
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  // Relations
+  doctorProfile Doctor?
+  auditLogs     AuditLog[]
+}
+
+model Patient {
+  id        Int      @id @default(autoincrement())
+  name      String
+  dob       String   @default("") // YYYY-MM-DD
+  age       Int
+  phone     String
+  address   String
+  abha_id   String?
+  createdAt DateTime @default(now())
+
+  visits   Visit[]
+  feedback Feedback[]
+}
+
+model Doctor {
+  id                Int     @id @default(autoincrement())
+  userId            Int     @unique
+  user              User    @relation(fields: [userId], references: [id])
+  department        String
+  opd_room          String
+  attendance_status String  @default("AVAILABLE") // AVAILABLE, LEAVE
+  work_status       String  @default("NOT_ARRIVED") // NOT_ARRIVED, IN_OPD, IN_OT, BREAK
+  delay_reason      String? // Reason for delay if any
+  lastActionAt      DateTime @default(now()) // Track last consultation activity
+
+  visits   Visit[]
+  opdQueue OPDQueue[]
+  feedback Feedback[]
+
+  @@index([work_status])
+}
+
+model Visit {
+  id              Int       @id @default(autoincrement())
+  patientId       Int
+  patient         Patient   @relation(fields: [patientId], references: [id])
+  doctorId        Int
+  doctor          Doctor    @relation(fields: [doctorId], references: [id])
+  tokenNumber     Int
+  qrCodeHash      String    @unique
+  status          String    @default("WAITING") // WAITING, IN_PROGRESS, COMPLETED, REFERRED
+  isProtected     Boolean   @default(true)
+  isEmergency     Boolean   @default(false)
+  emergencyReason String?
+  diagnosis       String?
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+
+  opdQueue    OPDQueue?
+  diagnostics Diagnostic[]
+  medicines   Medicine[]
+
+  @@index([doctorId, status])
+  @@index([qrCodeHash])
+}
+
+model OPDQueue {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  visitId   Int      @unique
+  visit     Visit    @relation(fields: [visitId], references: [id])
+  status    String   @default("WAITING") // WAITING, IN_PROGRESS, COMPLETED
+  priority  Int      @default(0) // 0 = Normal, 1 = Emergency Override
+  createdAt DateTime @default(now())
+
+  @@index([doctorId, status])
+}
+
+model Diagnostic {
+  id            Int      @id @default(autoincrement())
+  visitId       Int
+  visit         Visit    @relation(fields: [visitId], references: [id])
+  testType      String // XRAY, MRI, LAB
+  status        String   @default("WAITING") // WAITING, IN_PROGRESS, COMPLETED, NOT_AVAILABLE
+  isEmergency   Boolean  @default(false)
+  priority      Int      @default(0)
+  queuePosition Int?
+  result        String?
+  createdAt     DateTime @default(now())
+}
+
+model Medicine {
+  id           Int      @id @default(autoincrement())
+  visitId      Int
+  visit        Visit    @relation(fields: [visitId], references: [id])
+  medicineName String
+  dosage       String
+  createdAt    DateTime @default(now())
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  details   String
+  timestamp DateTime @default(now())
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  patientId Int?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  doctorId  Int?
+  doctor    Doctor?  @relation(fields: [doctorId], references: [id])
+  latitude  Float
+  longitude Float
+  isInside  Boolean
+  options   String // JSON string of selected options
+  comment   String?
+  isAnonymous Boolean @default(false)
+  createdAt DateTime @default(now())
+}

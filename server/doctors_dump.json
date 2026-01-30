@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "userId": 3,
+    "department": "General Medicine",
+    "opd_room": "101",
+    "attendance_status": "AVAILABLE",
+    "work_status": "IN_OT",
+    "delay_reason": null
+  },
+  {
+    "id": 2,
+    "userId": 4,
+    "department": "Orthopedics",
+    "opd_room": "102",
+    "attendance_status": "AVAILABLE",
+    "work_status": "NOT_ARRIVED",
+    "delay_reason": null
+  }
+]
